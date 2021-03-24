@@ -49,6 +49,15 @@ class Node1(object):
     def get_gender(self):
         return self.gender
 
+    def set_fName(self, fName):
+        self.fName = fName.upper()
+
+    def set_lName(self, lName):
+        self.lName = lName.upper()
+
+    def set_gender(self, gender):
+        self.gender = gender.upper()
+
     def has_next(self):
         if self.get_next() is None:
             return False
@@ -128,6 +137,22 @@ class LinkedList1(object):
             else:
                 this_node = this_node.get_next()
 
+    def editByID(self, inputID):
+        this_node = self.root
+        while this_node is not None:
+            if this_node.get_id() == inputID:
+                fNameNew = input("Enter new first name: ")
+                lNameNew = input("Enter new last name: ")
+                genderNew = input("Enter new gender m/f: ")
+                this_node.set_fName(fNameNew)
+                this_node.set_lName(lNameNew)
+                this_node.set_gender(genderNew)
+                print(f"ID: {this_node.get_id()}  {this_node.get_fName()}  {this_node.get_lName()}  {this_node.get_gender()}")
+                return True
+            else:
+                this_node = this_node.get_next()
+        return False
+
     def print_list(self):
         print("[Print List]")
         if self.root is None:
@@ -201,6 +226,10 @@ def deleteContact():
     inputID = input("Enter id for delete: ")
     myList1.remove(int(inputID))
 
+def editContact():
+    inputID = input("Enter id for edit: ")
+    myList1.editByID(int(inputID))
+
 
 myList1 = fillLinkedList()
 
@@ -208,6 +237,8 @@ option = 0
 while option != 6:
     if option == 1:
         createContact()
+    if option == 2:
+        editContact()
     if option == 3:
         searchContact()
     if option == 4:
