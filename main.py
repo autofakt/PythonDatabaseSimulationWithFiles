@@ -20,9 +20,10 @@ from datetime import datetime
 from random import seed
 from random import randint
 # seed random number generator
-seed(datetime.now())
 
 class Node1(object):
+
+    id: int
 
     def __init__(self, id=0, fName="", lName="", gender="", n=None):
         self.id = id
@@ -133,24 +134,42 @@ class Node2(object):
         return True
 
 class LinkedList1(object):
-    def __init__(self, root=None):
+    def __init__(self,counter=1,root=None):
         self.root = root
-        self.size = 0
+        #self.size = 0
+        self.counter = counter
+        print(f"counter value in constructor list 1: {counter}")
 
-    def get_size(self):
-        return self.size
+    # def get_size(self):
+    #     return self.size
+
+    def get_counter(self):
+        return self.counter
 
     def add(self, id=0, fName="", lName="", gender=""):
         new_node = Node1(id, fName, lName, gender.upper()) #Makes gender uppercase
+        self.counter = self.counter + 1
         if self.root is None:
             self.root = new_node
-            self.size += 1
+            # self.size += 1
             return
         last = self.root
         while last.next_node:
             last = last.next_node
         last.next_node = new_node
-        self.size += 1
+        # self.size += 1
+
+    def addNoCounter(self, id=0, fName="", lName="", gender=""):
+        new_node = Node1(id, fName, lName, gender.upper())  # Makes gender uppercase
+        if self.root is None:
+            self.root = new_node
+            # self.size += 1
+            return
+        last = self.root
+        while last.next_node:
+            last = last.next_node
+        last.next_node = new_node
+        # self.size += 1
 
     def remove(self, id):
         this_node = self.root
@@ -161,7 +180,8 @@ class LinkedList1(object):
                     prev_node.set_next(this_node.get_next())
                 else:
                     self.root = this_node.get_next()
-                self.size -= 1
+                # self.size -= 1
+                self.counter -= 1
                 return True
             else:
                 prev_node = this_node
@@ -233,24 +253,42 @@ class LinkedList1(object):
         print("[-----------]")
 
 class LinkedList2(object):
-    def __init__(self, root=None):
+    def __init__(self,counter=1,root=None):
         self.root = root
-        self.size = 0
+        # self.size = 0
+        self.counter = counter
 
-    def get_size(self):
-        return self.size
+    # def get_size(self):
+    #     return self.size
+
+    def get_counter(self):
+        return self.counter
 
     def add(self, id=0, address1="", address2="", apt="", city="", state="", zip ="",country=""):
         new_node = Node2(id, address1.upper(), address2.upper(), apt.upper(), city.upper(),state.upper(), zip.upper(), country.upper()) #Makes gender uppercase
+        self.counter += 1
         if self.root is None:
             self.root = new_node
-            self.size += 1
+            # self.size += 1
             return
         last = self.root
         while last.next_node:
             last = last.next_node
         last.next_node = new_node
-        self.size += 1
+        # self.size += 1
+
+    def addNoCounter(self, id=0, address1="", address2="", apt="", city="", state="", zip="", country=""):
+        new_node = Node2(id, address1.upper(), address2.upper(), apt.upper(), city.upper(), state.upper(), zip.upper(),
+                         country.upper())  # Makes gender uppercase
+        if self.root is None:
+            self.root = new_node
+            # self.size += 1
+            return
+        last = self.root
+        while last.next_node:
+            last = last.next_node
+        last.next_node = new_node
+        # self.size += 1
 
     def remove(self, id):
         this_node = self.root
@@ -261,7 +299,8 @@ class LinkedList2(object):
                     prev_node.set_next(this_node.get_next())
                 else:
                     self.root = this_node.get_next()
-                self.size -= 1
+                # self.size -= 1
+                self.counter -= 1
                 return True
             else:
                 prev_node = this_node
@@ -272,11 +311,11 @@ class LinkedList2(object):
         this_node = self.root
         while this_node is not None:
             if this_node.get_id() == inputID:
-                print(f"ID: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
-                return True
+                print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
+                this_node = this_node.get_next()
             else:
                 this_node = this_node.get_next()
-        return False
+
 
     def findByFirstName(self, fName):
         this_node = self.root
@@ -326,11 +365,19 @@ class LinkedList2(object):
         if self.root is None:
             return
         this_node = self.root
-        print(f"ID: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
+        print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
         while this_node.has_next():
             this_node = this_node.get_next()
-            print(f"ID: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
+            print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
         print("[-----------]")
+
+def loadCounters():
+    with open("counters.txt","r") as f:
+        content = f.readlines()
+    content = [x.strip() for x in content]
+    content = content[0].split()
+    f.close()
+    return content
 
 def readContactsFileIntoList():
     with open("contacts.txt","r") as f:
@@ -346,21 +393,49 @@ def readAddressFileIntoList():
     f.close()
     return content
 
-def fillLinkedList1():
-    tempLinkedList = LinkedList1()
+def fillLinkedList1(counter): #counter gives the last recorded id value
+    print(f"counter in filllink 1 start: {counter}")
+    tempLinkedList = LinkedList1(counter)
+    print(f"templinkedlist1: {tempLinkedList.get_counter()}")
     readList = readContactsFileIntoList()
-    for x in readList:
-        splitFile = x.split()
-        tempLinkedList.add(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3])
+    if len(readList)!= 0: #checks to see if file is empty
+        for x in readList:
+            splitFile = x.split()
+            tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3])
+    print(f"counter in filllink 1 end: {counter}")
     return tempLinkedList
 
-def fillLinkedList2():
-    tempLinkedList = LinkedList2()
+def fillLinkedList2(counter):
+    print(f"counter in filllink 2 start: {counter}")
+    tempLinkedList = LinkedList2(counter)
+    print(f"templinkedlist2: {tempLinkedList.get_counter()}")
     readList = readAddressFileIntoList()
-    for x in readList:
-        splitFile = x.split()
-        tempLinkedList.add(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7])
+    if len(readList) != 0:  # checks to see if file is empty
+        for x in readList:
+            splitFile = x.split()
+            tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7])
+    print(f"counter in filllink 2 end: {counter}")
     return tempLinkedList
+
+def createContact():
+    print(f"createcontact counter value: {myList1.get_counter()}")
+    id = myList1.get_counter()
+    fName = input("Please enter first name: ")
+    lName = input("Please enter last name: ")
+    gender = input("Please enter gender: ")
+    myList1.add(id, fName, lName, gender)
+    myList1.print_list()
+
+    address1 = input("Please enter address1: ")
+    address2 = input("Please enter address2(blank if none): ")
+    apt = input("Please enter apt(blank if none): ")
+    city = input("Please enter city: ")
+    state = input("Please enter state: ")
+    zip = input("Please enter zip: ")
+    country = input("Please enter country: ")
+    myList2.add(id, address1, address2, apt, city, state, zip, country)
+    myList2.print_list()
+
 
 def writeLinkedListIntoContactsFile(myList1):
     tempList = []
@@ -386,23 +461,20 @@ def writeLinkedListIntoAddressFile(myList1):
     f.close()
     # print(tempList)
 
-def createContact():
-    id = randint(100000,999999)
-    fName = input("Please enter first name: ")
-    lName = input("Please enter last name: ")
-    gender = input("Please enter gender: ")
-    myList1.add(id, fName, lName, gender)
-    myList1.print_list()
+def writeCounterValues(myList1,myList2):
+    tempList = []
+    contactsCounter = myList1.get_counter()
+    print(f"writeCounterValues1 {myList1.get_counter()}")
+    addressCounter = myList2.get_counter()
+    print(f"writeCounterValues2 {myList2.get_counter()}")
+    phoneCounter = 0
+    tempList.append(str(contactsCounter) +" "+ str(addressCounter) +" "+ str(phoneCounter))
+    with open("counters.txt","w") as f:
+        for x in tempList:
+            f.write(x)
+    f.close()
+    print(tempList)
 
-    address1 = input("Please enter address1: ")
-    address2 = input("Please enter address2(blank if none): ")
-    apt = input("Please enter apt(blank if none): ")
-    city = input("Please enter city: ")
-    state = input("Please enter state: ")
-    zip = input("Please enter zip: ")
-    country = input("Please enter country: ")
-    myList2.add(id, address1, address2, apt, city, state, zip, country)
-    myList2.print_list()
 
 
 def searchContact():
@@ -411,6 +483,7 @@ def searchContact():
         if option == 1:
             inputID = input("Enter id number: ")
             myList1.findByID(int(inputID))
+            myList2.findByID(int(inputID))
         if option == 2:
             inputName = input("Enter first name: ")
             myList1.findByFirstName(inputName.upper())
@@ -437,12 +510,24 @@ def editContact():
     inputID = input("Enter id for edit: ")
     myList1.editByID(int(inputID))
 
+def addAddress():
+    inputID = input("Enter id for address add: ")  #need to be able to validate if ID exists
+    address1 = input("Please enter address1: ")
+    address2 = input("Please enter address2(blank if none): ")
+    apt = input("Please enter apt(blank if none): ")
+    city = input("Please enter city: ")
+    state = input("Please enter state: ")
+    zip = input("Please enter zip: ")
+    country = input("Please enter country: ")
+    myList2.add(int(inputID), address1, address2, apt, city, state, zip, country)
+    myList2.print_list()
 
-myList1 = fillLinkedList1()
-myList2 = fillLinkedList2()
+counterList = loadCounters() # Grabs ID counters from txt file and loads each into the linkedlist
+myList1 = fillLinkedList1(int(counterList[0])) #Convert contact counter string to int value
+myList2 = fillLinkedList2(int(counterList[1]))
 
 option = 0
-while option != 7:
+while option != 9:
     if option == 1:
         createContact()
     if option == 2:
@@ -452,18 +537,25 @@ while option != 7:
     if option == 4:
         deleteContact()
     if option == 5:
-        myList1.print_list()
+        addAddress()
     if option == 6:
+        addAddress()
+    if option == 7:
+        myList1.print_list()
+    if option == 8:
         myList2.print_list()
 
     print("1 - Create Contact")
     print("2 - Edit Contact")
     print("3 - Search Contact")
     print("4 - Delete Contact")
-    print("5 - Print List1")
-    print("6 - Print List2")
-    print("7 - Exit")
+    print("5 - Add Address")
+    print("6 - Add Phone")
+    print("7 - Print List1")
+    print("8 - Print List2")
+    print("9 - Exit")
     option = int(input("Please select an option: "))
 
 writeLinkedListIntoContactsFile(myList1)
 writeLinkedListIntoAddressFile(myList2)
+writeCounterValues(myList1,myList2)
