@@ -66,8 +66,9 @@ class Node1(object):
 
 class Node2(object):
 
-    def __init__(self, id=0, address1="", address2="", apt="", city="", state="", zip="", country="",n=None):
+    def __init__(self, id=0, aid=0, address1="", address2="", apt="", city="", state="", zip="", country="",n=None):
         self.id = id
+        self.aid = aid
         self.address1 = address1.upper()
         self.address2 = address2.upper()
         self.apt = apt.upper()
@@ -85,6 +86,9 @@ class Node2(object):
 
     def get_id(self):
         return self.id
+
+    def get_aid(self):
+        return self.aid
 
     def get_address1(self):
         return self.address1
@@ -253,10 +257,11 @@ class LinkedList1(object):
         print("[-----------]")
 
 class LinkedList2(object):
-    def __init__(self,counter=1,root=None):
+    def __init__(self,counter=1,aid=1,root=None):
         self.root = root
         # self.size = 0
         self.counter = counter
+        self.aid = aid
 
     # def get_size(self):
     #     return self.size
@@ -264,8 +269,11 @@ class LinkedList2(object):
     def get_counter(self):
         return self.counter
 
-    def add(self, id=0, address1="", address2="", apt="", city="", state="", zip ="",country=""):
-        new_node = Node2(id, address1.upper(), address2.upper(), apt.upper(), city.upper(),state.upper(), zip.upper(), country.upper()) #Makes gender uppercase
+    def get_aid(self):
+        return self.aid
+
+    def add(self, id=0, aid=0, address1="", address2="", apt="", city="", state="", zip ="",country=""):
+        new_node = Node2(id, aid, address1.upper(), address2.upper(), apt.upper(), city.upper(),state.upper(), zip.upper(), country.upper()) #Makes gender uppercase
         self.counter += 1
         if self.root is None:
             self.root = new_node
@@ -277,8 +285,8 @@ class LinkedList2(object):
         last.next_node = new_node
         # self.size += 1
 
-    def addNoCounter(self, id=0, address1="", address2="", apt="", city="", state="", zip="", country=""):
-        new_node = Node2(id, address1.upper(), address2.upper(), apt.upper(), city.upper(), state.upper(), zip.upper(),
+    def addNoCounter(self, id=0, aid=0, address1="", address2="", apt="", city="", state="", zip="", country=""):
+        new_node = Node2(id,aid, address1.upper(), address2.upper(), apt.upper(), city.upper(), state.upper(), zip.upper(),
                          country.upper())  # Makes gender uppercase
         if self.root is None:
             self.root = new_node
@@ -386,10 +394,10 @@ class LinkedList2(object):
         if self.root is None:
             return
         this_node = self.root
-        print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
+        print(f"AD: {this_node.get_id()}  {this_node.get_aid()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
         while this_node.has_next():
             this_node = this_node.get_next()
-            print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
+            print(f"AD: {this_node.get_id()}  {this_node.get_aid()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
         print("[-----------]")
 
 def loadCounters():
@@ -434,13 +442,16 @@ def fillLinkedList2(counter):
     if len(readList) != 0:  # checks to see if file is empty
         for x in readList:
             splitFile = x.split()
-            tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7])
+            tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7],splitFile[7])
     print(f"counter in filllink 2 end: {counter}")
     return tempLinkedList
 
 def createContact():
-    print(f"createcontact counter value: {myList1.get_counter()}")
+    print(f"createcontact cid value: {myList1.get_counter()}")
+    print(f"createcontact aid value: {myList2.get_aid()}")
     id = myList1.get_counter()
+    aid = myList2.get_counter()
+
     fName = input("Please enter first name: ")
     lName = input("Please enter last name: ")
     gender = input("Please enter gender: ")
@@ -454,7 +465,7 @@ def createContact():
     state = input("Please enter state: ")
     zip = input("Please enter zip: ")
     country = input("Please enter country: ")
-    myList2.add(id, address1, address2, apt, city, state, zip, country)
+    myList2.add(id,aid, address1, address2, apt, city, state, zip, country)
     myList2.print_list()
 
 
@@ -474,7 +485,7 @@ def writeLinkedListIntoAddressFile(myList1):
     tempList = []
     this_node = myList2.root
     while this_node:
-        tempList.append(str(this_node.get_id()) +" "+ this_node.get_address1() +" "+ this_node.get_address2() +" "+ this_node.get_apt() +" "+ this_node.get_city() +" "+ this_node.get_state()+" "+ this_node.get_zip()+" "+ this_node.get_country())
+        tempList.append(str(this_node.get_id()) +" "+ str(this_node.get_aid()) +" "+ this_node.get_address1() +" "+ this_node.get_address2() +" "+ this_node.get_apt() +" "+ this_node.get_city() +" "+ this_node.get_state()+" "+ this_node.get_zip()+" "+ this_node.get_country())
         this_node = this_node.get_next()
     with open("address.txt","w") as f:
         for x in tempList:
@@ -540,7 +551,7 @@ def addAddress():
     state = input("Please enter state: ")
     zip = input("Please enter zip: ")
     country = input("Please enter country: ")
-    myList2.add(int(inputID), address1, address2, apt, city, state, zip, country)
+    myList2.add(int(inputID), myList2.get_counter(),address1, address2, apt, city, state, zip, country)
     myList2.print_list()
 
 counterList = loadCounters() # Grabs ID counters from txt file and loads each into the linkedlist
