@@ -181,7 +181,7 @@ class LinkedList1(object):
                 else:
                     self.root = this_node.get_next()
                 # self.size -= 1
-                self.counter -= 1
+                #self.counter -= 1
                 return True
             else:
                 prev_node = this_node
@@ -300,12 +300,33 @@ class LinkedList2(object):
                 else:
                     self.root = this_node.get_next()
                 # self.size -= 1
-                self.counter -= 1
+                #self.counter -= 1
                 return True
             else:
                 prev_node = this_node
                 this_node = this_node.get_next()
         return False
+
+    def remove2(self, id):
+        temp = self.root
+        prev = None
+
+        while temp != None and temp.get_id() == id:
+            self.root = temp.get_next()
+            temp = self.root
+        while temp != None:
+
+            while(temp != None and temp.get_id() != id):
+                prev = temp
+                temp = temp.get_next()
+            if temp == None:
+                return False
+            prev.set_next(temp.get_next())
+            temp = prev.get_next()
+        return True
+
+
+
 
     def findByID(self, inputID):
         this_node = self.root
@@ -504,7 +525,7 @@ def searchContact():
 def deleteContact():
     inputID = input("Enter id for delete: ")
     myList1.remove(int(inputID))
-    myList2.remove(int(inputID))
+    myList2.remove2(int(inputID))
 
 def editContact():
     inputID = input("Enter id for edit: ")
