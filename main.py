@@ -333,6 +333,24 @@ class LinkedList2(object):
             temp = prev.get_next()
         return True
 
+    def removeByAID(self, aid):
+        temp = self.root
+        prev = None
+
+        while temp != None and temp.get_aid() == aid:
+            self.root = temp.get_next()
+            temp = self.root
+        while temp != None:
+
+            while(temp != None and temp.get_aid() != aid):
+                prev = temp
+                temp = temp.get_next()
+            if temp == None:
+                return False
+            prev.set_next(temp.get_next())
+            temp = prev.get_next()
+        return True
+
 
 
 
@@ -442,7 +460,7 @@ def fillLinkedList2(counter):
     if len(readList) != 0:  # checks to see if file is empty
         for x in readList:
             splitFile = x.split()
-            tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7],splitFile[7])
+            tempLinkedList.addNoCounter(int(splitFile[0]),int(splitFile[1]),splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7],splitFile[7])
     print(f"counter in filllink 2 end: {counter}")
     return tempLinkedList
 
@@ -538,6 +556,10 @@ def deleteContact():
     myList1.remove(int(inputID))
     myList2.remove2(int(inputID))
 
+def deleteAddress():
+    inputAID = input("Enter a-id for delete: ")
+    myList2.removeByAID(int(inputAID))
+
 def editContact():
     inputID = input("Enter id for edit: ")
     myList1.editByID(int(inputID))
@@ -559,7 +581,7 @@ myList1 = fillLinkedList1(int(counterList[0])) #Convert contact counter string t
 myList2 = fillLinkedList2(int(counterList[1]))
 
 option = 0
-while option != 9:
+while option != 10:
     if option == 1:
         createContact()
     if option == 2:
@@ -576,6 +598,8 @@ while option != 9:
         myList1.print_list()
     if option == 8:
         myList2.print_list()
+    if option == 9:
+        deleteAddress()
 
     print("1 - Create Contact")
     print("2 - Edit Contact")
@@ -585,7 +609,8 @@ while option != 9:
     print("6 - Add Phone")
     print("7 - Print List1")
     print("8 - Print List2")
-    print("9 - Exit")
+    print("9 - Delete Address")
+    print("10 - Exit")
     option = int(input("Please select an option: "))
 
 writeLinkedListIntoContactsFile(myList1)
