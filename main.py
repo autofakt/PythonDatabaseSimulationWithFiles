@@ -16,10 +16,7 @@
 # for x in mycursor:
 #   print(x)
 
-from datetime import datetime
-from random import seed
-from random import randint
-# seed random number generator
+
 
 class Node1(object): #contact node
 
@@ -180,7 +177,6 @@ class LinkedList1(object): #contact linkedlist
         self.root = root
         #self.size = 0
         self.counter = counter
-        print(f"counter value in constructor list 1: {counter}")
 
     # def get_size(self):
     #     return self.size
@@ -429,17 +425,27 @@ class LinkedList2(object): #address linkedlist
             else:
                 this_node = this_node.get_next()
 
-    def editByID(self, inputID):
+    def editByAID(self, inputAID):
         this_node = self.root
         while this_node is not None:
-            if this_node.get_id() == inputID:
-                fNameNew = input("Enter new first name: ")
-                lNameNew = input("Enter new last name: ")
-                genderNew = input("Enter new gender m/f: ")
-                this_node.set_fName(fNameNew)
-                this_node.set_lName(lNameNew)
-                this_node.set_gender(genderNew)
-                print(f"ID: {this_node.get_id()}  {this_node.get_fName()}  {this_node.get_lName()}  {this_node.get_gender()}")
+            if this_node.get_aid() == inputAID:
+
+                address1New = input("Please enter new address1: ")
+                address2New = input("Please enter new address2(blank if none): ")
+                aptNew = input("Please enter new apt(blank if none): ")
+                cityNew = input("Please enter new city: ")
+                stateNew = input("Please enter new state: ")
+                zipNew = input("Please enter new zip: ")
+                countryNew = input("Please enter new country: ")
+
+                this_node.set_address1(address1New)
+                this_node.set_address2(address2New)
+                this_node.set_apt(aptNew)
+                this_node.set_city(cityNew)
+                this_node.set_state(stateNew)
+                this_node.set_zip(zipNew)
+                this_node.set_country(countryNew)
+                print(f"AD: {this_node.get_id()}  {this_node.get_address1()}  {this_node.get_address2()}  {this_node.get_apt()}  {this_node.get_city()}  {this_node.get_state()}  {this_node.get_zip()}  {this_node.get_country()}")
                 return True
             else:
                 this_node = this_node.get_next()
@@ -532,7 +538,7 @@ class LinkedList3(object): #phone linkedlist
             temp = prev.get_next()
         return True
 
-    def removeByPID(self, aid):
+    def removeByPID(self, pid):
         temp = self.root
         prev = None
 
@@ -615,46 +621,34 @@ def readPhonesFileIntoList():
     return content
 
 def fillLinkedList1(counter, activeID): #counter gives the last recorded id value
-    print(f"counter in filllink 1 start: {counter}")
     tempLinkedList = LinkedList1(counter)
-    print(f"templinkedlist1: {tempLinkedList.get_counter()}")
     readList = readContactsFileIntoList()
     if len(readList)!= 0: #checks to see if file is empty
         for x in readList:
             splitFile = x.split()
             activeID.append(int(splitFile[0])) #adds active IDs into list to input validation
             tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3])
-    print(f"counter in filllink 1 end: {counter}")
     return tempLinkedList
 
 def fillLinkedList2(counter):
-    print(f"counter in filllink 2 start: {counter}")
     tempLinkedList = LinkedList2(counter)
-    print(f"templinkedlist2: {tempLinkedList.get_counter()}")
     readList = readAddressFileIntoList()
     if len(readList) != 0:  # checks to see if file is empty
         for x in readList:
             splitFile = x.split()
             tempLinkedList.addNoCounter(int(splitFile[0]),int(splitFile[1]),splitFile[2],splitFile[3],splitFile[4],splitFile[5],splitFile[6],splitFile[7],splitFile[7])
-    print(f"counter in filllink 2 end: {counter}")
     return tempLinkedList
 
 def fillLinkedList3(counter):
-    print(f"counter in filllink 3 start: {counter}")
     tempLinkedList = LinkedList3(counter)
-    print(f"templinkedlist3: {tempLinkedList.get_counter()}")
     readList = readPhonesFileIntoList()
     if len(readList) != 0:  # checks to see if file is empty
         for x in readList:
             splitFile = x.split()
             tempLinkedList.addNoCounter(int(splitFile[0]),int(splitFile[1]),splitFile[2],splitFile[3])
-    print(f"counter in filllink 3 end: {counter}")
     return tempLinkedList
 
 def createContact(activeID): #activeID keeps track of live CID's for input validation
-    print(f"createcontact cid value: {myList1.get_counter()}")
-    print(f"createcontact aid value: {myList2.get_aid()}")
-    print(f"createcontact pid value: {myList3.get_pid()}")
     id = myList1.get_counter()
     aid = myList2.get_counter()
     pid = myList3.get_counter()
@@ -666,7 +660,7 @@ def createContact(activeID): #activeID keeps track of live CID's for input valid
     myList1.print_list()
 
     activeID.append(id)
-    print(f"ActiveID: +{activeID}")
+    print(f"ActiveID: {activeID}")
 
     address1 = input("Please enter address1: ")
     address2 = input("Please enter address2(blank if none): ")
@@ -723,11 +717,8 @@ def writeLinkedListIntoPhoneFile(myList3):
 def writeCounterValues(myList1,myList2,myList3):
     tempList = []
     contactsCounter = myList1.get_counter()
-    print(f"writeCounterValues1 {myList1.get_counter()}")
     addressCounter = myList2.get_counter()
-    print(f"writeCounterValues2 {myList2.get_counter()}")
     phoneCounter = myList3.get_counter()
-    print(f"writeCounterValues3 {myList3.get_counter()}")
     tempList.append(str(contactsCounter) +" "+ str(addressCounter) +" "+ str(phoneCounter))
     with open("counters.txt","w") as f:
         for x in tempList:
@@ -762,33 +753,50 @@ def searchContact():
 
 def deleteContact(activeID):
     inputID = input("Enter id for delete: ")
+    while inputID.isdigit() == False:
+        inputID = input("Must be a digit. Enter id for edit: ")
     myList1.remove(int(inputID))
     myList2.remove2(int(inputID))
     myList3.remove2(int(inputID))
 
-    activeID.remove(int(inputID))
-    print(f"ActiveID; {activeID}")
+    if activeID:
+        activeID.remove(int(inputID))
+    print(f"ActiveID: {activeID}")
 
 def deleteAddress():
     inputAID = input("Enter a-id for delete: ")
+    while inputAID.isdigit() == False:
+        inputAID = input("Must be a digit. Enter a-id for edit: ")
     myList2.removeByAID(int(inputAID))
 
 def deletePhone():
     inputPID = input("Enter p-id for delete: ")
+    while inputPID.isdigit() == False:
+        inputPID = input("Must be a digit. Enter p-id for edit: ")
     myList3.removeByPID(int(inputPID))
 
 def editContact():
     inputID = input("Enter id for edit: ")
+    while inputID.isdigit() == False:
+        inputID = input("Must be a digit. Enter id for edit: ")
     myList1.editByID(int(inputID))
+
+def editAddress():
+    inputAID = input("Enter a-id for edit: ")
+    while inputAID.isdigit() == False:
+        inputAID = input("Must be a digit. Enter a-id for edit: ")
+    myList2.editByAID(int(inputAID))
 
 def editPhone():
     inputPID = input("Enter p-id for edit: ")
+    while inputPID.isdigit() == False:
+        inputPID = input("Must be a digit. Enter p-id for edit: ")
     myList3.editByPID(int(inputPID))
 
 def addAddress(activeID):
     inputID = input("Enter id for address add: ")  #need to be able to validate if ID exists
-    while(int(inputID) not in activeID):
-        inputID = input("Id not found. Enter id for address add: ")
+    while inputID.isdigit() == False or int(inputID) not in activeID: #checks if digit is entered and id found in activeID
+        inputID = input("Invalid input. Enter id for address add: ")
     address1 = input("Please enter address1: ")
     address2 = input("Please enter address2(blank if none): ")
     apt = input("Please enter apt(blank if none): ")
@@ -801,8 +809,8 @@ def addAddress(activeID):
 
 def addPhone(activeID):
     inputID = input("Enter id for phone add: ")  #need to be able to validate if ID exists
-    while(int(inputID) not in activeID): #checks ActiveID list to see if if is live
-       inputID = input("Id not found. Enter id for phones add: ")
+    while inputID.isdigit() == False or int(inputID) not in activeID: #checks if digit is entered and id found in activeID
+        inputID = input("Invalid input. Enter id for address add: ")
     type = input("Please enter phone type: ")
     number = input("Please enter phone number(9 digit format): ")
     myList3.add(int(inputID), myList3.get_counter(), type, number)
@@ -813,51 +821,58 @@ counterList = loadCounters() # Grabs ID counters from txt file and loads each in
 activeID = []
 
 myList1 = fillLinkedList1(int(counterList[0]),activeID) #Convert contact counter string to int value, active ID tracks all live CID's
-print(f"ActiveID; {activeID}")
+print(f"ActiveID: {activeID}")
 myList2 = fillLinkedList2(int(counterList[1]))
 myList3 = fillLinkedList3(int(counterList[2]))
 
 option = 0
-while option != 13:
+while option != 14:
     if option == 1:
         createContact(activeID)
     if option == 2:
-        editContact()
-    if option == 3:
-        searchContact()
-    if option == 4:
-        deleteContact(activeID)
-    if option == 5:
         addAddress(activeID)
-    if option == 6:
+    if option == 3:
         addPhone(activeID)
-    if option == 7:
-        myList1.print_list()
-    if option == 8:
-        myList2.print_list()
-    if option == 9:
-        myList3.print_list()
-    if option == 10:
-        deleteAddress()
-    if option == 11:
-        deletePhone()
-    if option == 12:
+    if option == 4:
+        editContact()
+    if option == 6:
         editPhone()
+    if option == 5:
+        editAddress()
+    if option == 7:
+        searchContact()
+    if option == 8:
+        deleteContact(activeID)
+    if option == 9:
+        deleteAddress()
+    if option == 10:
+        deletePhone()
+    if option == 11:
+        myList1.print_list()
+    if option == 12:
+        myList2.print_list()
+    if option == 13:
+        myList3.print_list()
+    
 
     print("1 - Create Contact")
-    print("2 - Edit Contact")
-    print("3 - Search Contact")
-    print("4 - Delete Contact")
-    print("5 - Add Address")
-    print("6 - Add Phone")
-    print("7 - Print List1")
-    print("8 - Print List2")
-    print("9 - Print List3")
-    print("10 - Delete Address")
-    print("11 - Delete Phone")
-    print("12 - Edit Phone")
-    print("13 - Exit")
-    option = int(input("Please select an option: "))
+    print("2 - Add Address")
+    print("3 - Add Phone")
+    print("4 - Edit Contact")
+    print("5 - Edit Address")
+    print("6 - Edit Phone")
+    print("7 - Search Contact")
+    print("8 - Delete Contact")
+    print("9 - Delete Address")
+    print("10 - Delete Phone")
+    print("11 - Print Contacts")
+    print("12 - Print Address")
+    print("13 - Print Phones")
+    print("14 - Exit")
+    option = input("Please select an option: ")
+    while option.isdigit() == False:  #checks if digit is entered and id found in activeID
+        option = input("Invalid input. Please select an option: ")
+    option = int(option)
 
 writeLinkedListIntoContactsFile(myList1)
 writeLinkedListIntoAddressFile(myList2)
