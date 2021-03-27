@@ -614,7 +614,7 @@ def readPhonesFileIntoList():
     f.close()
     return content
 
-def fillLinkedList1(counter): #counter gives the last recorded id value
+def fillLinkedList1(counter, activeID): #counter gives the last recorded id value
     print(f"counter in filllink 1 start: {counter}")
     tempLinkedList = LinkedList1(counter)
     print(f"templinkedlist1: {tempLinkedList.get_counter()}")
@@ -622,6 +622,7 @@ def fillLinkedList1(counter): #counter gives the last recorded id value
     if len(readList)!= 0: #checks to see if file is empty
         for x in readList:
             splitFile = x.split()
+            activeID.append(int(splitFile[0])) #adds active IDs into list to input validation
             tempLinkedList.addNoCounter(int(splitFile[0]),splitFile[1],splitFile[2],splitFile[3])
     print(f"counter in filllink 1 end: {counter}")
     return tempLinkedList
@@ -650,7 +651,7 @@ def fillLinkedList3(counter):
     print(f"counter in filllink 3 end: {counter}")
     return tempLinkedList
 
-def createContact():
+def createContact(activeID): #activeID keeps track of live CID's for input validation
     print(f"createcontact cid value: {myList1.get_counter()}")
     print(f"createcontact aid value: {myList2.get_aid()}")
     print(f"createcontact pid value: {myList3.get_pid()}")
@@ -663,6 +664,9 @@ def createContact():
     gender = input("Please enter gender: ")
     myList1.add(id, fName, lName, gender)
     myList1.print_list()
+
+    activeID.append(id)
+    print(f"ActiveID: +{activeID}")
 
     address1 = input("Please enter address1: ")
     address2 = input("Please enter address2(blank if none): ")
@@ -756,11 +760,14 @@ def searchContact():
         print("5 - Exit Search")
         option = int(input("Please select search option: "))
 
-def deleteContact():
+def deleteContact(activeID):
     inputID = input("Enter id for delete: ")
     myList1.remove(int(inputID))
     myList2.remove2(int(inputID))
     myList3.remove2(int(inputID))
+
+    activeID.remove(int(inputID))
+    print(f"ActiveID; {activeID}")
 
 def deleteAddress():
     inputAID = input("Enter a-id for delete: ")
@@ -778,8 +785,10 @@ def editPhone():
     inputPID = input("Enter p-id for edit: ")
     myList3.editByPID(int(inputPID))
 
-def addAddress():
+def addAddress(activeID):
     inputID = input("Enter id for address add: ")  #need to be able to validate if ID exists
+    while(int(inputID) not in activeID):
+        inputID = input("Id not found. Enter id for address add: ")
     address1 = input("Please enter address1: ")
     address2 = input("Please enter address2(blank if none): ")
     apt = input("Please enter apt(blank if none): ")
@@ -790,32 +799,38 @@ def addAddress():
     myList2.add(int(inputID), myList2.get_counter(),address1, address2, apt, city, state, zip, country)
     myList2.print_list()
 
-def addPhone():
-    inputID = input("Enter id for address add: ")  #need to be able to validate if ID exists
+def addPhone(activeID):
+    inputID = input("Enter id for phone add: ")  #need to be able to validate if ID exists
+    while(int(inputID) not in activeID): #checks ActiveID list to see if if is live
+       inputID = input("Id not found. Enter id for phones add: ")
     type = input("Please enter phone type: ")
     number = input("Please enter phone number(9 digit format): ")
     myList3.add(int(inputID), myList3.get_counter(), type, number)
     myList3.print_list()
 
 counterList = loadCounters() # Grabs ID counters from txt file and loads each into the linkedlist
-myList1 = fillLinkedList1(int(counterList[0])) #Convert contact counter string to int value
+
+activeID = []
+
+myList1 = fillLinkedList1(int(counterList[0]),activeID) #Convert contact counter string to int value, active ID tracks all live CID's
+print(f"ActiveID; {activeID}")
 myList2 = fillLinkedList2(int(counterList[1]))
 myList3 = fillLinkedList3(int(counterList[2]))
 
 option = 0
 while option != 13:
     if option == 1:
-        createContact()
+        createContact(activeID)
     if option == 2:
         editContact()
     if option == 3:
         searchContact()
     if option == 4:
-        deleteContact()
+        deleteContact(activeID)
     if option == 5:
-        addAddress()
+        addAddress(activeID)
     if option == 6:
-        addPhone()
+        addPhone(activeID)
     if option == 7:
         myList1.print_list()
     if option == 8:
